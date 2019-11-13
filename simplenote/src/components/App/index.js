@@ -19,8 +19,8 @@ class App extends React.Component {
         notes : [
             {
                 id : '_1aaaaaa',
-                title : 'test1',
-                contents : 'contents1'
+                title : '끄아아ㅏㅏㅏㅏ',
+                contents : '배가고프다아ㅏㅏㅏ'
             },
             {
                 id : '2bbbbbbb',
@@ -37,6 +37,13 @@ class App extends React.Component {
         activeId: '3ccccc'
     }
 
+    //이벤트핸들러 메서드
+    handleListItemClick = (id) => {
+        this.setState({ activeId : id });
+    }
+
+    
+
     render(){
         const{ notes, activeId } = this.state;
         return (
@@ -49,7 +56,11 @@ class App extends React.Component {
                 import할 때의 이름을 가져와서 tag 형식으로 씀
                 */}
                 <div className="container">
-                    <List notes={notes} activeId={activeId}/>
+                    <List 
+                        notes={notes} 
+                        activeId={activeId} 
+                        onListItemClick={this.handleListItemClick}
+                    />
                     <Note />
                 </div>
             </div>
