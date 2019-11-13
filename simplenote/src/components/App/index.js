@@ -4,6 +4,7 @@ import './index.css';
 import Header from '../Header';
 import List from '../List';
 import Note from '../Note';
+import { generatedId } from '../../utils';
 
 
 class App extends React.Component {
@@ -42,13 +43,61 @@ class App extends React.Component {
         this.setState({ activeId : id });
     }
 
+    // 편집
+    handleEditNote = (type, e) => {
+        //새 notes어레이생성 = 현재 notes 배열을 반환
+        const notes = [ ...this.state.notes ];
+
+        // 선택된 ListItem의 id 값인 객체를 note로 반환
+        const note = notes.find(
+            (item) => item.id === this.state.activeId
+        )
+
+        note[type] = e.target.value ;
+
+        this.setState({
+            notes,
+        });
+    }
     
+    //추가
+    handleAddNote = () => {
+        const id = generatedId(); //random ID 생성
+        this.setState({
+            notes : [
+                ...this.state.notes,
+                {
+                    id,
+                    title : '제목 넣어주세여',
+                    contents : '내용입력해줘요',
+                }
+            ],
+            activeId : id,
+        });
+    }
+
+    //삭제
+    handleDeleteNote = () => {
+        //현재 선택한 note를 제외한, 새로운 배열 객체 생성
+        const notes = this.state.notes.filter((item) => item.id !== this.state.activeId );
+
+        this.setState({
+            notes,
+            activeId : notes.length === 0 ? null : notes[0].id,
+        });
+    }
 
     render(){
         const{ notes, activeId } = this.state;
+        //클릭한 listItem을 찾아서 0번지를 activeNote로 반환.
+        const activeNote = notes.filter((item) => item.id === activeId)[0];
+
         return (
             <div className="app">
-                <Header />
+                <Header 
+                    onAddNote = { this.handleAddNote }
+                    onDeleteNote = { this.handleDeleteNote }
+                />
                 {/* 
                 원래는 <div>WELCOME TO ny's</div> 를 썼음
                 redering할 땐 
@@ -61,7 +110,15 @@ class App extends React.Component {
                         activeId={activeId} 
                         onListItemClick={this.handleListItemClick}
                     />
-                    <Note />
+                    {/*  Note가 1개라도 존재할 때 <Note /> 렌더링.*/}
+                    {/* note 속성에 activeNote 전달 */}
+                    {
+                        notes.length !== 0 && 
+                        <Note 
+                            note = {activeNote} 
+                            onEditNote = { this.handleEditNote }
+                        />
+                    }
                 </div>
             </div>
         );

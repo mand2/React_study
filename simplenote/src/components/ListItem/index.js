@@ -4,6 +4,7 @@ import './index.css';
 
 class ListItem extends React.Component {
     render(){
+        console.log('render NoteList ' + this.props.id);
         const { active,title,contents, onClick } = this.props;
         return (
             <div 
