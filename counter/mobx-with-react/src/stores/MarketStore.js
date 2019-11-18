@@ -29,12 +29,16 @@ class MarketStore {
 
     @action
     take = name => {
-        const itemToTake = this.selectedItems.find(item => item.name === name);
-        itemToTake.count--;
+        const { number } = this.root.CounterStore;
 
-        if(itemToTake.count === 0){
+        const itemToTake = this.selectedItems.find(item => item.name === name);
+        // itemToTake.count--;
+        
+        if(itemToTake.count <= number){
             this.selectedItems.remove(itemToTake);//배열에서 제거처리
+            return;
         }
+        itemToTake.count -= number;
     };
 
     @computed

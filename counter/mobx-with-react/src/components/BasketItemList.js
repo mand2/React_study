@@ -2,7 +2,7 @@ import React from 'react';
 import BasketItem from './BasketItem';
 import { inject, observer } from 'mobx-react';
 
-const BasketItemList = ({ items, total, onTake }) => {
+const BasketItemList = ({ items, onTake }) => {
     const itemList = items.map(item => (
         <BasketItem
           item = {item}
